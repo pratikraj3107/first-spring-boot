@@ -1,8 +1,12 @@
 package com.pratik.first.spring.boot.controller;
 
-import com.pratik.first.spring.boot.dto.EmployeeDto;
+import com.pratik.first.spring.boot.dto.EmployeeRequestDto;
+import com.pratik.first.spring.boot.dto.EmployeeResponseDto;
+import com.pratik.first.spring.boot.dto.EntityDtoMapper;
 import com.pratik.first.spring.boot.model.Employee;
 import com.pratik.first.spring.boot.service.EmployeeService;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/employees")
+@Slf4j
 public class EmployeeController {
 
     private final EmployeeService employeeService;
@@ -20,22 +25,24 @@ public class EmployeeController {
     }
 
     @PostMapping(value="/create", consumes = "application/json")
-    public ResponseEntity<Employee> createEmployee(@RequestBody EmployeeDto employeeDto) {
+    public ResponseEntity<EmployeeResponseDto> createEmployee(@Valid @RequestBody EmployeeRequestDto employeeDto) {
         System.out.println("Received Employee DTO: " + employeeDto);
         Employee savedEmployee = employeeService.saveEmployee(employeeDto);
-        return ResponseEntity.ok(savedEmployee);
+        EmployeeResponseDto response = EntityDtoMapper.toEmployeeResponseDto(savedEmployee);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
+    public ResponseEntity<EmployeeResponseDto> getEmployeeById(@PathVariable Long id) {
+        log.info("Fetching employee with ID: {}", id);
         Employee employee = employeeService.getEmployeeById(id);
-        return new ResponseEntity<>(employee, HttpStatus.OK);
+        return new ResponseEntity<>(EntityDtoMapper.toEmployeeResponseDto(employee), HttpStatus.OK);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody EmployeeDto employeeDto) {
+    public ResponseEntity<EmployeeResponseDto> updateEmployee(@PathVariable Long id, @Valid @RequestBody EmployeeRequestDto employeeDto) {
         Employee updatedEmployee = employeeService.updateEmployee(id, employeeDto);
-        return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
+        return new ResponseEntity<>(EntityDtoMapper.toEmployeeResponseDto(updatedEmployee), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -45,8 +52,8 @@ public class EmployeeController {
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<Employee>> getAllEmployeeBy() {
+    public ResponseEntity<List<EmployeeResponseDto>> getAllEmployeeBy() {
         List<Employee> employees = employeeService.getAllEmployee();
-        return new ResponseEntity<>(employees, HttpStatus.OK);
+        return new ResponseEntity<>(EntityDtoMapper.toEmployeeResponseDtoList(employees), HttpStatus.OK);
     }
 }

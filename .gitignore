@@ -1,0 +1,73 @@
+# IntelliJ IDEA
+/.idea/
+*.iml
+*.iws
+*.ipr
+
+# VS Code
+.vscode/
+
+# Maven
+/target/
+# If you commit the wrapper jar/properties, keep them; otherwise ignore wrapper folder
+/.mvn/wrapper/maven-wrapper.jar
+/.mvn/wrapper/maven-wrapper.properties
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Build output
+/out/
+
+# Logs
+logs/
+*.log
+hs_err_pid*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Compiled classes
+*.class
+
+# Archives
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+
+# Maven-generated files
+dependency-reduced-pom.xml
+release.properties
+
+# Local env
+.env
+*.env
+
+# Other
+*.log
+*.tmp
+mvnw
+mvnw.cmd
+HELP.md
+
+# Ignore IntelliJ module libraries
+.idea_modules/
+
+# Coverage
+.coverage
+jacoco.exec
+
+# Misc
+.gradle
+
+# Node (in case frontend folders are added later)
+node_modules/
+npm-debug.log
+
+# keep this file in repo to avoid committing unnecessary files
+
