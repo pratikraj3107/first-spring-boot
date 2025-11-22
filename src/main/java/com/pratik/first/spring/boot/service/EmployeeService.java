@@ -4,13 +4,14 @@ import com.pratik.first.spring.boot.dto.EmployeeRequestDto;
 import com.pratik.first.spring.boot.exception.EmployeeException;
 import com.pratik.first.spring.boot.model.Employee;
 import com.pratik.first.spring.boot.model.Department;
-import com.pratik.first.spring.boot.reposiotory.EmployeeRepository;
-import com.pratik.first.spring.boot.reposiotory.DepartmentRepository;
+import com.pratik.first.spring.boot.repository.EmployeeRepository;
+import com.pratik.first.spring.boot.repository.DepartmentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -71,5 +72,12 @@ public class EmployeeService {
 
     public List<Employee> getAllEmployee() {
         return employeeRepository.findAll();
+    }
+
+    public List<Employee> getEntityByCustomCriteria(Map<String, Object> criteria) {
+        log.info("Fetching employee with criteria: {}", criteria);
+        List<Employee>empList =  employeeRepository.getEntityWithCustomCriteria(criteria, Employee.class);
+        log.info("Found employees: {}", empList);
+        return empList;
     }
 }
