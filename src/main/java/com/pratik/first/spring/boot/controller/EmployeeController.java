@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/employees")
@@ -34,9 +36,11 @@ public class EmployeeController {
 
     @GetMapping("/get/{id}")
     public ResponseEntity<EmployeeResponseDto> getEmployeeById(@PathVariable Long id) {
-        log.info("Fetching employee with ID: {}", id);
-        Employee employee = employeeService.getEmployeeById(id);
-        return new ResponseEntity<>(EntityDtoMapper.toEmployeeResponseDto(employee), HttpStatus.OK);
+//        log.info("Fetching employee with ID: {}", id);
+//        Employee employee = employeeService.getEmployeeById(id);
+        Map<String, Object> criteria = Map.of("id", id);
+        List<Employee> employee1 = employeeService.getEntityByCustomCriteria(criteria);
+        return new ResponseEntity<>(EntityDtoMapper.toEmployeeResponseDto(employee1.getFirst()), HttpStatus.OK);
     }
 
     @PutMapping("/update/{id}")
